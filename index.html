@@ -2,6 +2,8 @@
 <html lang="zh-Hant">
 <head>
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>台北西門町接髮專家Hange韓哥預約系統</title>
@@ -41,6 +43,21 @@
     <button id="sendTimeButton">確認時間</button>
 
     <script>
+        // Firebase 初始化
+        const firebaseConfig = {
+            apiKey: "AIzaSyBX-ESLnLcd152dZsBZIhh7N7RYmUHgIRg",
+            authDomain: "hange-time.firebaseapp.com",
+            databaseURL: "https://hange-time-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "hange-time",
+            storageBucket: "hange-time.appspot.com",
+            messagingSenderId: "51182306246",
+            appId: "1:51182306246:web:a5693a4072025cb1bde8c7",
+            measurementId: "G-BYSV83P0ZV"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
         document.addEventListener("DOMContentLoaded", function() {
             liff.init({ liffId: "2006300099-OLXDXZlb" })
             .then(() => {
@@ -96,11 +113,22 @@
             }
 
             if (selectedDate && selectedTime) {
+                // 發送LINE訊息
                 liff.sendMessages([{
                     type: 'text',
                     text: `姓名：${name}\n電話：${phone}\n來源平台：${source}\n生日：${birthday}\n您選擇的預約時間是：${selectedDate} ${selectedTime}\n（確認是否預約成功會在告知）`
                 }]).then(() => {
                     console.log('Message sent successfully');
+                    // 儲存到 Firebase
+                    db.ref('bookings').push({
+                        name: name,
+                        phone: phone,
+                        source: source,
+                        birthday: birthday,
+                        date: selectedDate,
+                        time: selectedTime
+                    });
+                    
                     // 壽星提醒功能
                     const today = new Date();
                     const todayString = (today.getMonth() + 1).toString().padStart(2, '0') + '/' + today.getDate().toString().padStart(2, '0');
