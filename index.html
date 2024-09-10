@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台北西門町接髮專家Hange韓哥預約系統</title>
+</head>
+<body>
+    <h1>台北西門町接髮專家Hange韓哥預約系統</h1>
+
+    <label for="name">姓名：</label>
+    <input type="text" id="name" required><br><br>
+
+    <label for="phone">電話：</label>
+    <input type="text" id="phone" required><br><br>
+
+    <label for="source">在哪個平台看到我？</label>
+    <select id="source" required>
+        <option value="FB">FB</option>
+        <option value="IG">IG</option>
+        <option value="谷歌查詢接髮">谷歌查詢接髮</option>
+        <option value="朋友介紹">朋友介紹</option>
+    </select><br><br>
+
+    <label for="birthday">生日（月/日）：</label>
+    <input type="text" id="birthday" placeholder="MM/DD" required><br><br>
+
+    <h2>請選擇日期</h2>
+    <input type="date" id="date-selector" min="" max=""><br><br>
+
+    <h2>請選擇時間</h2>
+    <select id="time-selector">
+        <option value="13:00">1:00 PM</option>
+        <option value="14:00">2:00 PM</option>
+        <option value="15:00">3:00 PM</option>
+        <option value="16:00">4:00 PM</option>
+        <option value="17:00">5:00 PM</option>
+    </select><br><br>
+
+    <button id="sendTimeButton">確認時間</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            liff.init({ liffId: "" })
+            .then(() => {
+                console.log('LIFF initialized');
+                setDateRange(); // 初始化日期範圍
+            })
+            .catch((err) => {
+                console.error('LIFF initialization failed', err);
+            });
+        });
+
+        // 設置日期範圍，只允許選擇接下來的兩個月，並排除星期一
+        function setDateRange() {
+            const dateSelector = document.getElementById('date-selector');
+            const today = new Date();
+            const maxDate = new Date(today);
+            maxDate.setMonth(today.getMonth() + 2);
+
+            dateSelector.min = today.toISOString().split('T')[0];
+            dateSelector.max = maxDate.toISOString().split('T')[0];
+
+            // 禁用星期一
+            dateSelector.addEventListener('change', function() {
+                const selectedDate = new Date(dateSelector.value);
+                if (selectedDate.getDay() === 1) { 
+                    alert('星期一為公休，請選擇其他日期！');
+                    dateSelector.value = ''; 
+                }
+            });
+        }
+
+        document.getElementById('sendTimeButton').addEventListener('click', function() {
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const selectedDate = document.getElementById('date-selector').value;
+            const selectedTime = document.getElementById('time-selector').value;
+            const source = document.getElementById('source').value;
+            const birthday = document.getElementById('birthday').value.trim();
+
+            if (!name || !phone || !source || !birthday) {
+                alert('請填寫所有欄位！');
+                return;
+            }
+
+            if (!/^\d{10}$/.test(phone)) {
+                alert('電話號碼需為10個數字！');
+                return;
+            }
+
+            if (!/^(0[1-9]|1[0-2])\/(0[1-9]|[1-2][0-9]|3[0-1])$/.test(birthday)) {
+                alert('生日格式應為 MM/DD，例如 08/15');
+                return;
+            }
+
+            if (selectedDate && selectedTime) {
+                liff.sendMessages([{
+                    type: 'text',
+                    text: `姓名：${name}\n電話：${phone}\n來源平台：${source}\n生日：${birthday}\n您選擇的預約時間是：${selectedDate} ${selectedTime}\n（確認是否預約成功會在告知）`
+                }]).then(() => {
+                    console.log('Message sent successfully');
+                    // 壽星提醒功能
+                    const today = new Date();
+                    const todayString = (today.getMonth() + 1).toString().padStart(2, '0') + '/' + today.getDate().toString().padStart(2, '0');
+                    if (todayString === birthday) {
+                        alert(`提醒：今天是 ${name} 的生日！`);
+                    }
+                    liff.closeWindow();
+                }).catch((err) => {
+                    console.error('Error sending message: ', err);
+                    alert('無法發送消息，請重試！');
+                });
+            } else {
+                alert('請選擇日期和時間！');
+            }
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #f1f1f1;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        input, select, button {
+            font-size: 16px;
+            padding: 10px;
+            margin-top: 10px;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</body>
+</html>
