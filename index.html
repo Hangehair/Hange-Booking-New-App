@@ -1,109 +1,73 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>預約表單</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        form {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        label, select, input {
-            display: block;
-            margin: 10px 0;
-        }
-        button {
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .output {
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>預約諮詢表單</title>
+  <style>
+    label {
+      display: block;
+      margin: 8px 0;
+    }
+  </style>
 </head>
 <body>
+  <h1>預約諮詢表單</h1>
+  <form id="reservationForm">
+    <label for="name">名字:</label>
+    <input type="text" id="name" name="name" required><br>
 
-    <h1>台北西門町接髮專家 - 預約系統</h1>
+    <label for="phone">電話:</label>
+    <input type="tel" id="phone" name="phone" required><br>
 
-    <form id="appointmentForm">
-        <label for="name">名字：</label>
-        <input type="text" id="name" name="name" required>
+    <label for="month">生日月份:</label>
+    <select id="month" name="month" required>
+      <option value="" disabled selected>選擇生日月份</option>
+      <option value="1">1月</option>
+      <option value="2">2月</option>
+      <option value="3">3月</option>
+      <option value="4">4月</option>
+      <option value="5">5月</option>
+      <option value="6">6月</option>
+      <option value="7">7月</option>
+      <option value="8">8月</option>
+      <option value="9">9月</option>
+      <option value="10">10月</option>
+      <option value="11">11月</option>
+      <option value="12">12月</option>
+    </select><br>
 
-        <label for="phone">電話：</label>
-        <input type="tel" id="phone" name="phone" required>
+    <label for="time">選擇預約時段:</label>
+    <select id="time" name="time" required>
+      <option value="" disabled selected>選擇時間</option>
+      <option value="13:00">1:00 PM</option>
+      <option value="14:00">2:00 PM</option>
+      <option value="15:00">3:00 PM</option>
+      <option value="16:00">4:00 PM</option>
+      <option value="17:00">5:00 PM</option>
+    </select><br>
 
-        <label for="birthdayMonth">生日月份：</label>
-        <select id="birthdayMonth" name="birthdayMonth" required>
-            <option value="">請選擇生日月份</option>
-            <option value="1">1月</option>
-            <option value="2">2月</option>
-            <option value="3">3月</option>
-            <option value="4">4月</option>
-            <option value="5">5月</option>
-            <option value="6">6月</option>
-            <option value="7">7月</option>
-            <option value="8">8月</option>
-            <option value="9">9月</option>
-            <option value="10">10月</option>
-            <option value="11">11月</option>
-            <option value="12">12月</option>
-        </select>
+    <button type="submit">送出預約</button>
+  </form>
 
-        <label for="appointmentDate">預約日期：</label>
-        <input type="date" id="appointmentDate" name="appointmentDate" required>
+  <script>
+    document.getElementById("reservationForm").addEventListener("submit", function(event){
+      event.preventDefault();
 
-        <label for="appointmentTime">預約時間：</label>
-        <select id="appointmentTime" name="appointmentTime" required>
-            <option value="">請選擇時間</option>
-            <option value="13:00">1:00 PM</option>
-            <option value="14:00">2:00 PM</option>
-            <option value="15:00">3:00 PM</option>
-            <option value="16:00">4:00 PM</option>
-            <option value="17:00">5:00 PM</option>
-        </select>
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const month = document.getElementById("month").value;
+      const time = document.getElementById("time").value;
 
-        <button type="submit">送出預約</button>
-    </form>
+      // 構建發送的訊息內容
+      const message = `名字: ${name}\n電話: ${phone}\n生日月份: ${month}\n預約時間: ${time}`;
 
-    <div class="output">
-        <h2>您的預約資訊：</h2>
-        <p id="outputText">尚無資料</p>
-    </div>
+      // 將資料發送至 LINE 對話框
+      alert("預約成功！以下是您的資料:\n" + message);
 
-    <script>
-        document.getElementById('appointmentForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const birthdayMonth = document.getElementById('birthdayMonth').value;
-            const appointmentDate = document.getElementById('appointmentDate').value;
-            const appointmentTime = document.getElementById('appointmentTime').value;
-
-            const outputText = `
-                名字：${name}<br>
-                電話：${phone}<br>
-                生日月份：${birthdayMonth} 月<br>
-                預約日期：${appointmentDate}<br>
-                預約時間：${appointmentTime}
-            `;
-            document.getElementById('outputText').innerHTML = outputText;
-        });
-    </script>
-
+      // 清空表單
+      document.getElementById("reservationForm").reset();
+    });
+  </script>
 </body>
 </html>
