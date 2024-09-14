@@ -110,6 +110,7 @@
     <button type="submit">送出預約</button>
   </form>
 
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script>
     // 設定最小和最大預約日期（排除星期一）
     document.addEventListener('DOMContentLoaded', function () {
@@ -128,6 +129,19 @@
           this.value = ''; // 清空選擇
         }
       });
+
+      // 初始化LIFF
+      liff.init({ liffId: "2006300099-OLXDXZlb" }).then(() => {
+        // 自動帶入LINE使用者資料
+        liff.getProfile().then(profile => {
+          document.getElementById('name').value = profile.displayName;
+        });
+
+        // 獲取LINE使用者電話（若有授權）
+        liff.getDecodedIDToken().then(idToken => {
+          document.getElementById('phone').value = idToken.sub; // 假設idToken中包含電話號碼
+        });
+      }).catch(err => console.error(err));
     });
 
     // 提交表單並發送至LINE
