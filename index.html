@@ -3,56 +3,101 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>預約諮詢表單</title>
+  <title>台北西門町接髮專家Hange韓哥預約系統</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f2f2f2;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.5em;
+      color: #333;
+      margin-bottom: 20px;
+    }
     label {
       display: block;
-      margin: 8px 0;
+      margin: 10px 0 5px;
+      font-size: 0.9em;
+      color: #555;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
     }
   </style>
   <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
 </head>
 <body>
-  <h1>預約諮詢表單</h1>
-  <form id="reservationForm">
-    <label for="name">名字:</label>
-    <input type="text" id="name" name="name" required><br>
+  <div class="container">
+    <h1>台北西門町接髮專家Hange韓哥預約系統</h1>
+    <form id="reservationForm">
+      <label for="date">選擇預約日期:</label>
+      <input type="date" id="date" name="date" required><br>
 
-    <label for="phone">電話:</label>
-    <input type="tel" id="phone" name="phone" required><br>
+      <label for="time">選擇預約時段:</label>
+      <select id="time" name="time" required>
+        <option value="" disabled selected>選擇時間</option>
+        <option value="13:00">1:00 PM</option>
+        <option value="14:00">2:00 PM</option>
+        <option value="15:00">3:00 PM</option>
+        <option value="16:00">4:00 PM</option>
+        <option value="17:00">5:00 PM</option>
+      </select><br>
 
-    <label for="month">生日月份:</label>
-    <select id="month" name="month" required>
-      <option value="" disabled selected>選擇生日月份</option>
-      <option value="1">1月</option>
-      <option value="2">2月</option>
-      <option value="3">3月</option>
-      <option value="4">4月</option>
-      <option value="5">5月</option>
-      <option value="6">6月</option>
-      <option value="7">7月</option>
-      <option value="8">8月</option>
-      <option value="9">9月</option>
-      <option value="10">10月</option>
-      <option value="11">11月</option>
-      <option value="12">12月</option>
-    </select><br>
+      <label for="name">名字:</label>
+      <input type="text" id="name" name="name" required><br>
 
-    <label for="date">選擇預約日期:</label>
-    <input type="date" id="date" name="date" required><br>
+      <label for="phone">電話:</label>
+      <input type="tel" id="phone" name="phone" required><br>
 
-    <label for="time">選擇預約時段:</label>
-    <select id="time" name="time" required>
-      <option value="" disabled selected>選擇時間</option>
-      <option value="13:00">1:00 PM</option>
-      <option value="14:00">2:00 PM</option>
-      <option value="15:00">3:00 PM</option>
-      <option value="16:00">4:00 PM</option>
-      <option value="17:00">5:00 PM</option>
-    </select><br>
+      <label for="month">生日月份:</label>
+      <select id="month" name="month" required>
+        <option value="" disabled selected>選擇生日月份</option>
+        <option value="1">1月</option>
+        <option value="2">2月</option>
+        <option value="3">3月</option>
+        <option value="4">4月</option>
+        <option value="5">5月</option>
+        <option value="6">6月</option>
+        <option value="7">7月</option>
+        <option value="8">8月</option>
+        <option value="9">9月</option>
+        <option value="10">10月</option>
+        <option value="11">11月</option>
+        <option value="12">12月</option>
+      </select><br>
 
-    <button type="submit">送出預約</button>
-  </form>
+      <button type="submit">送出預約</button>
+    </form>
+  </div>
 
   <script>
     // 初始化 LIFF
@@ -61,12 +106,27 @@
         .then(() => {
           if (!liff.isLoggedIn()) {
             liff.login();
+          } else {
+            liff.getProfile().then(profile => {
+              document.getElementById('name').value = profile.displayName;
+              document.getElementById('phone').value = profile.userId;  // 通常 phone 應該是用戶自己輸入，這裡是示例
+            });
           }
         })
         .catch(err => console.error('LIFF 初始化錯誤', err));
     }
 
-    document.getElementById("reservationForm").addEventListener("submit", function(event){
+    // 防止選擇星期一作為預約日期
+    document.getElementById("date").addEventListener("change", function() {
+      const selectedDate = new Date(this.value);
+      if (selectedDate.getDay() === 1) {
+        alert("星期一不提供預約服務，請選擇其他日期。");
+        this.value = "";
+      }
+    });
+
+    // 表單提交事件
+    document.getElementById("reservationForm").addEventListener("submit", function(event) {
       event.preventDefault();
 
       const name = document.getElementById("name").value;
@@ -96,7 +156,7 @@
       }
     });
 
-    // 當頁面載入時初始化 LIFF
+    // 頁面載入時初始化 LIFF
     window.onload = function() {
       initializeLiff();
     };
