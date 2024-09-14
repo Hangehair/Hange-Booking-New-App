@@ -10,6 +10,7 @@
       margin: 8px 0;
     }
   </style>
+  <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
 </head>
 <body>
   <h1>預約諮詢表單</h1>
@@ -37,6 +38,9 @@
       <option value="12">12月</option>
     </select><br>
 
+    <label for="date">選擇預約日期:</label>
+    <input type="date" id="date" name="date" required><br>
+
     <label for="time">選擇預約時段:</label>
     <select id="time" name="time" required>
       <option value="" disabled selected>選擇時間</option>
@@ -51,23 +55,51 @@
   </form>
 
   <script>
+    // 初始化 LIFF
+    function initializeLiff() {
+      liff.init({ liffId: "2006300099-OLXDXZlb" })
+        .then(() => {
+          if (!liff.isLoggedIn()) {
+            liff.login();
+          }
+        })
+        .catch(err => console.error('LIFF 初始化錯誤', err));
+    }
+
     document.getElementById("reservationForm").addEventListener("submit", function(event){
       event.preventDefault();
 
       const name = document.getElementById("name").value;
       const phone = document.getElementById("phone").value;
       const month = document.getElementById("month").value;
+      const date = document.getElementById("date").value;
       const time = document.getElementById("time").value;
 
-      // 構建發送的訊息內容
-      const message = `名字: ${name}\n電話: ${phone}\n生日月份: ${month}\n預約時間: ${time}`;
+      // 組合訊息內容
+      const message = `名字: ${name}\n電話: ${phone}\n生日月份: ${month}\n預約日期: ${date}\n預約時間: ${time}`;
 
-      // 將資料發送至 LINE 對話框
-      alert("預約成功！以下是您的資料:\n" + message);
-
-      // 清空表單
-      document.getElementById("reservationForm").reset();
+      // 使用 LIFF 傳送訊息到 LINE 聊天
+      if (liff.isInClient()) {
+        liff.sendMessages([{
+          type: 'text',
+          text: message
+        }])
+        .then(() => {
+          alert('預約成功！訊息已發送。');
+          liff.closeWindow();
+        })
+        .catch((err) => {
+          console.error('發送訊息失敗', err);
+        });
+      } else {
+        alert('請在 LINE 中打開此表單來提交預約。');
+      }
     });
+
+    // 當頁面載入時初始化 LIFF
+    window.onload = function() {
+      initializeLiff();
+    };
   </script>
 </body>
 </html>
