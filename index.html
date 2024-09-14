@@ -1,183 +1,109 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>台北西門町接髮專家Hange韓哥預約系統</title>
-</head>
-<body>
-    <h1>台北西門町接髮專家Hange韓哥預約系統</h1>
-
-    <label for="name">姓名：</label>
-    <input type="text" id="name" required><br><br>
-
-    <label for="phone">電話：</label>
-    <input type="text" id="phone" required><br><br>
-
-    <label for="source">在哪個平台看到我？</label>
-    <select id="source" required>
-        <option value="FB">FB</option>
-        <option value="IG">IG</option>
-        <option value="谷歌查詢接髮">谷歌查詢接髮</option>
-        <option value="朋友介紹">朋友介紹</option>
-    </select><br><br>
-
-    <label for="birthday">生日（月/日）：</label>
-    <input type="text" id="birthday" placeholder="MM/DD" required><br><br>
-
-    <h2>請選擇日期</h2>
-    <input type="date" id="date-selector" min="" max=""><br><br>
-
-    <h2>請選擇時間</h2>
-    <select id="time-selector">
-        <option value="13:00">1:00 PM</option>
-        <option value="14:00">2:00 PM</option>
-        <option value="15:00">3:00 PM</option>
-        <option value="16:00">4:00 PM</option>
-        <option value="17:00">5:00 PM</option>
-    </select><br><br>
-
-    <button id="sendTimeButton">確認時間</button>
-
-    <script>
-        // Firebase 初始化
-        const firebaseConfig = {
-            apiKey: "AIzaSyBX-ESLnLcd152dZsBZIhh7N7RYmUHgIRg",
-            authDomain: "hange-time.firebaseapp.com",
-            databaseURL: "https://hange-time-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "hange-time",
-            storageBucket: "hange-time.appspot.com",
-            messagingSenderId: "51182306246",
-            appId: "1:51182306246:web:a5693a4072025cb1bde8c7",
-            measurementId: "G-BYSV83P0ZV"
-        };
-
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        document.addEventListener("DOMContentLoaded", function() {
-            liff.init({ liffId: "2006300099-OLXDXZlb" })
-            .then(() => {
-                console.log('LIFF initialized');
-                setDateRange(); // 初始化日期範圍
-            })
-            .catch((err) => {
-                console.error('LIFF initialization failed', err);
-            });
-        });
-
-        function setDateRange() {
-            const dateSelector = document.getElementById('date-selector');
-            const today = new Date();
-            const maxDate = new Date(today);
-            maxDate.setMonth(today.getMonth() + 2);
-
-            dateSelector.min = today.toISOString().split('T')[0];
-            dateSelector.max = maxDate.toISOString().split('T')[0];
-
-            // 禁用星期一
-            dateSelector.addEventListener('change', function() {
-                const selectedDate = new Date(dateSelector.value);
-                if (selectedDate.getDay() === 1) { 
-                    alert('星期一為公休，請選擇其他日期！');
-                    dateSelector.value = ''; 
-                }
-            });
-        }
-
-        document.getElementById('sendTimeButton').addEventListener('click', function() {
-            const name = document.getElementById('name').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const selectedDate = document.getElementById('date-selector').value;
-            const selectedTime = document.getElementById('time-selector').value;
-            const source = document.getElementById('source').value;
-            const birthday = document.getElementById('birthday').value.trim();
-
-            if (!name || !phone || !source || !birthday) {
-                alert('請填寫所有欄位！');
-                return;
-            }
-
-            if (!/^\d{10}$/.test(phone)) {
-                alert('電話號碼需為10個數字！');
-                return;
-            }
-
-            if (!/^(0[1-9]|1[0-2])\/(0[1-9]|[1-2][0-9]|3[0-1])$/.test(birthday)) {
-                alert('生日格式應為 MM/DD，例如 08/15');
-                return;
-            }
-
-            if (selectedDate && selectedTime) {
-                // 發送LINE訊息
-                liff.sendMessages([{
-                    type: 'text',
-                    text: `姓名：${name}\n電話：${phone}\n來源平台：${source}\n生日：${birthday}\n您選擇的預約時間是：${selectedDate} ${selectedTime}\n（確認是否預約成功會在告知）`
-                }]).then(() => {
-                    console.log('Message sent successfully');
-                    // 儲存到 Firebase
-                    db.ref('bookings').push({
-                        name: name,
-                        phone: phone,
-                        source: source,
-                        birthday: birthday,
-                        date: selectedDate,
-                        time: selectedTime
-                    });
-                    
-                    // 壽星提醒功能
-                    const today = new Date();
-                    const todayString = (today.getMonth() + 1).toString().padStart(2, '0') + '/' + today.getDate().toString().padStart(2, '0');
-                    if (todayString === birthday) {
-                        alert(`提醒：今天是 ${name} 的生日！`);
-                    }
-                    liff.closeWindow();
-                }).catch((err) => {
-                    console.error('Error sending message: ', err);
-                    alert('無法發送消息，請重試！');
-                });
-            } else {
-                alert('請選擇日期和時間！');
-            }
-        });
-    </script>
-
+    <title>預約表單</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            background-color: #f1f1f1;
             padding: 20px;
-            margin-bottom: 20px;
+            background-color: #f4f4f4;
         }
-
-        input, select, button {
-            font-size: 16px;
-            padding: 10px;
-            margin-top: 10px;
-            width: 80%;
-            max-width: 300px;
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
+        label, select, input {
+            display: block;
+            margin: 10px 0;
+        }
         button {
+            padding: 10px 15px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            cursor: pointer;
             border-radius: 5px;
+            cursor: pointer;
         }
-
         button:hover {
             background-color: #45a049;
         }
+        .output {
+            margin-top: 20px;
+        }
     </style>
+</head>
+<body>
+
+    <h1>台北西門町接髮專家 - 預約系統</h1>
+
+    <form id="appointmentForm">
+        <label for="name">名字：</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="phone">電話：</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="birthdayMonth">生日月份：</label>
+        <select id="birthdayMonth" name="birthdayMonth" required>
+            <option value="">請選擇生日月份</option>
+            <option value="1">1月</option>
+            <option value="2">2月</option>
+            <option value="3">3月</option>
+            <option value="4">4月</option>
+            <option value="5">5月</option>
+            <option value="6">6月</option>
+            <option value="7">7月</option>
+            <option value="8">8月</option>
+            <option value="9">9月</option>
+            <option value="10">10月</option>
+            <option value="11">11月</option>
+            <option value="12">12月</option>
+        </select>
+
+        <label for="appointmentDate">預約日期：</label>
+        <input type="date" id="appointmentDate" name="appointmentDate" required>
+
+        <label for="appointmentTime">預約時間：</label>
+        <select id="appointmentTime" name="appointmentTime" required>
+            <option value="">請選擇時間</option>
+            <option value="13:00">1:00 PM</option>
+            <option value="14:00">2:00 PM</option>
+            <option value="15:00">3:00 PM</option>
+            <option value="16:00">4:00 PM</option>
+            <option value="17:00">5:00 PM</option>
+        </select>
+
+        <button type="submit">送出預約</button>
+    </form>
+
+    <div class="output">
+        <h2>您的預約資訊：</h2>
+        <p id="outputText">尚無資料</p>
+    </div>
+
+    <script>
+        document.getElementById('appointmentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const birthdayMonth = document.getElementById('birthdayMonth').value;
+            const appointmentDate = document.getElementById('appointmentDate').value;
+            const appointmentTime = document.getElementById('appointmentTime').value;
+
+            const outputText = `
+                名字：${name}<br>
+                電話：${phone}<br>
+                生日月份：${birthdayMonth} 月<br>
+                預約日期：${appointmentDate}<br>
+                預約時間：${appointmentTime}
+            `;
+            document.getElementById('outputText').innerHTML = outputText;
+        });
+    </script>
+
 </body>
 </html>
