@@ -33,7 +33,7 @@
       border: 1px solid #ccc;
       width: 100%;
       box-sizing: border-box;
-      text-align: center; /* 資料置中 */
+      text-align: center;
     }
     .date-picker {
       padding: 10px;
@@ -42,6 +42,17 @@
       font-size: 16px;
       width: 100%;
       text-align: center;
+    }
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+    }
+    .checkbox-group input {
+      margin-right: 10px;
     }
     button {
       padding: 10px;
@@ -96,6 +107,17 @@
       <option value="12">12月</option>
     </select>
 
+    <!-- 預約項目（複選框）-->
+    <div class="checkbox-group">
+      <label><input type="checkbox" value="接髮"> 接髮</label>
+      <label><input type="checkbox" value="染髮"> 染髮</label>
+      <label><input type="checkbox" value="燙髮"> 燙髮</label>
+      <label><input type="checkbox" value="護髮保養"> 護髮保養</label>
+      <label><input type="checkbox" value="頭皮護理"> 頭皮護理</label>
+      <label><input type="checkbox" value="洗髮"> 洗髮</label>
+      <label><input type="checkbox" value="剪髮"> 剪髮</label>
+    </div>
+
     <!-- 來源選擇 -->
     <select id="referralSource" required>
       <option value="" disabled selected>在哪邊知道Hange韓哥</option>
@@ -109,6 +131,25 @@
     <!-- 送出按鈕 -->
     <button type="submit">送出預約</button>
   </form>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB9Ip48HEF5G3s0GW_5HXxP1ZayE4mcVKw",
+      authDomain: "linetime-1222.firebaseapp.com",
+      projectId: "linetime-1222",
+      storageBucket: "linetime-1222.appspot.com",
+      messagingSenderId: "752617776357",
+      appId: "1:752617776357:web:c467c61e1ad3c42da9e00c",
+      measurementId: "G-WGTEP9YPYY"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script>
@@ -124,22 +165,19 @@
       // 排除星期一
       document.getElementById('date').addEventListener('change', function () {
         const selectedDate = new Date(this.value);
-        if (selectedDate.getDay() === 1) { // 1代表星期一
+        if (selectedDate.getDay() === 1) {
           alert('星期一無法預約，請選擇其他日期！');
-          this.value = ''; // 清空選擇
+          this.value = '';
         }
       });
 
       // 初始化LIFF
       liff.init({ liffId: "2006300099-OLXDXZlb" }).then(() => {
-        // 自動帶入LINE使用者資料
         liff.getProfile().then(profile => {
           document.getElementById('name').value = profile.displayName;
         });
-
-        // 獲取LINE使用者電話（若有授權）
         liff.getDecodedIDToken().then(idToken => {
-          document.getElementById('phone').value = idToken.sub; // 假設idToken中包含電話號碼
+          document.getElementById('phone').value = idToken.sub;
         });
       }).catch(err => console.error(err));
     });
@@ -155,30 +193,18 @@
       const birthdayMonth = document.getElementById('birthdayMonth').value;
       const referralSource = document.getElementById('referralSource').value;
 
-      // LINE發送訊息
+      // 獲取選中的預約項目
+      const selectedServices = Array.from(document.querySelectorAll('.checkbox-group input:checked'))
+        .map(checkbox => checkbox.value)
+        .join('、');
+
       const message = `
-        預約諮詢:
         預約日期: ${date}
         預約時間: ${time}
         名字: ${name}
         電話: ${phone}
         生日月份: ${birthdayMonth}月
+        預約項目: ${selectedServices}
         來源: ${referralSource}
         （請等待韓哥審核並通知、為了維護品質預約請勿趕時間）
-        Hange韓哥服務地址：https://maps.app.goo.gl/8GQYF3yosEfm8uJa9?g_st=com.google.maps.preview.copy
-      `;
-
-      // 使用 LIFF 發送訊息
-      liff.sendMessages([{
-        type: 'text',
-        text: message
-      }]).then(function () {
-        alert('預約已送出，請等待韓哥審核！');
-        liff.closeWindow();
-      }).catch(function (error) {
-        console.error('Error sending message: ', error);
-      });
-    });
-  </script>
-</body>
-</html>
+        Hange韓哥服務地址
