@@ -1,210 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>台北西門町接髮專家Hange韓哥預約系統</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f8f8f8;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 90%;
-      max-width: 400px;
-    }
-    input, select {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      width: 100%;
-      box-sizing: border-box;
-      text-align: center;
-    }
-    .date-picker {
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      width: 100%;
-      text-align: center;
-    }
-    .checkbox-group {
-      display: flex;
-      flex-direction: column;
-    }
-    .checkbox-group label {
-      display: flex;
-      align-items: center;
-    }
-    .checkbox-group input {
-      margin-right: 10px;
-    }
-    button {
-      padding: 10px;
-      font-size: 18px;
-      color: white;
-      background-color: #007bff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-  </style>
-</head>
-<body>
-  <h2>台北西門町接髮專家Hange韓哥預約系統</h2>
-  <form id="bookingForm">
-    <!-- 日曆選擇器 -->
-    <input type="date" id="date" class="date-picker" min="" max="" required>
+<script type="module">
+  // Import the Firebase SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+  
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyB9Ip48HEF5G3s0GW_5HXxP1ZayE4mcVKw",
+    authDomain: "linetime-1222.firebaseapp.com",
+    projectId: "linetime-1222",
+    storageBucket: "linetime-1222.appspot.com",
+    messagingSenderId: "752617776357",
+    appId: "1:752617776357:web:c467c61e1ad3c42da9e00c",
+    measurementId: "G-WGTEP9YPYY"
+  };
 
-    <!-- 時間選擇 -->
-    <select id="time" required>
-      <option value="" disabled selected>請選擇預約時段</option>
-      <option value="13:00">13:00</option>
-      <option value="14:00">14:00</option>
-      <option value="15:00">15:00</option>
-      <option value="16:00">16:00</option>
-      <option value="17:00">17:00</option>
-    </select>
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app); // Initialize Firestore
 
-    <!-- 名字 -->
-    <input type="text" id="name" placeholder="名字" required>
-
-    <!-- 電話 -->
-    <input type="tel" id="phone" placeholder="電話" required>
-
-    <!-- 生日月份 -->
-    <select id="birthdayMonth" required>
-      <option value="" disabled selected>請選擇生日月份</option>
-      <option value="1">1月</option>
-      <option value="2">2月</option>
-      <option value="3">3月</option>
-      <option value="4">4月</option>
-      <option value="5">5月</option>
-      <option value="6">6月</option>
-      <option value="7">7月</option>
-      <option value="8">8月</option>
-      <option value="9">9月</option>
-      <option value="10">10月</option>
-      <option value="11">11月</option>
-      <option value="12">12月</option>
-    </select>
-
-    <!-- 預約項目（複選框）-->
-    <div class="checkbox-group">
-      <label><input type="checkbox" value="接髮"> 接髮</label>
-      <label><input type="checkbox" value="染髮"> 染髮</label>
-      <label><input type="checkbox" value="燙髮"> 燙髮</label>
-      <label><input type="checkbox" value="護髮保養"> 護髮保養</label>
-      <label><input type="checkbox" value="頭皮護理"> 頭皮護理</label>
-      <label><input type="checkbox" value="洗髮"> 洗髮</label>
-      <label><input type="checkbox" value="剪髮"> 剪髮</label>
-    </div>
-
-    <!-- 來源選擇 -->
-    <select id="referralSource" required>
-      <option value="" disabled selected>在哪邊知道Hange韓哥</option>
-      <option value="Google搜尋">谷歌搜尋</option>
-      <option value="FB">FB</option>
-      <option value="IG">IG</option>
-      <option value="朋友介紹">朋友介紹</option>
-      <option value="預約整理">預約整理</option>
-    </select>
-
-    <!-- 送出按鈕 -->
-    <button type="submit">送出預約</button>
-  </form>
-
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyB9Ip48HEF5G3s0GW_5HXxP1ZayE4mcVKw",
-      authDomain: "linetime-1222.firebaseapp.com",
-      projectId: "linetime-1222",
-      storageBucket: "linetime-1222.appspot.com",
-      messagingSenderId: "752617776357",
-      appId: "1:752617776357:web:c467c61e1ad3c42da9e00c",
-      measurementId: "G-WGTEP9YPYY"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-  </script>
-
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-  <script>
-    // 設定最小和最大預約日期（排除星期一）
-    document.addEventListener('DOMContentLoaded', function () {
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = (today.getMonth() + 1).toString().padStart(2, '0');
-      const day = today.getDate().toString().padStart(2, '0');
-      const minDate = `${year}-${month}-${day}`;
-      document.getElementById('date').setAttribute('min', minDate);
-
-      // 排除星期一
-      document.getElementById('date').addEventListener('change', function () {
-        const selectedDate = new Date(this.value);
-        if (selectedDate.getDay() === 1) {
-          alert('星期一無法預約，請選擇其他日期！');
-          this.value = '';
-        }
+  // Submit booking data to Firestore
+  async function submitBooking(name, phone, date, time, source) {
+    try {
+      const docRef = await addDoc(collection(db, "bookings"), {
+        name: name,
+        phone: phone,
+        date: date,
+        time: time,
+        source: source
       });
+      console.log("Booking added to Firestore with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
 
-      // 初始化LIFF
-      liff.init({ liffId: "2006300099-OLXDXZlb" }).then(() => {
-        liff.getProfile().then(profile => {
-          document.getElementById('name').value = profile.displayName;
-        });
-        liff.getDecodedIDToken().then(idToken => {
-          document.getElementById('phone').value = idToken.sub;
-        });
-      }).catch(err => console.error(err));
+  // Function to send a message via LINE
+  function sendLineMessage(name, phone, date, time) {
+    liff.sendMessages([{
+      type: 'text',
+      text: `預約成功！\n姓名: ${name}\n電話: ${phone}\n預約日期: ${date}\n預約時間: ${time}\n我們將會盡快與您確認，請耐心等候。`
+    }])
+    .then(() => {
+      console.log("Message sent!");
+    })
+    .catch((err) => {
+      console.error("Error sending message: ", err);
     });
+  }
 
-    // 提交表單並發送至LINE
-    document.getElementById('bookingForm').addEventListener('submit', function (event) {
-      event.preventDefault();
+  // Event listener for form submission
+  document.getElementById('bookingForm').addEventListener('submit', function (e) {
+    e.preventDefault(); // Prevent form from submitting normally
 
-      const date = document.getElementById('date').value;
-      const time = document.getElementById('time').value;
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const birthdayMonth = document.getElementById('birthdayMonth').value;
-      const referralSource = document.getElementById('referralSource').value;
+    // Collect form data
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('time').value;
+    const source = document.getElementById('source').value;
 
-      // 獲取選中的預約項目
-      const selectedServices = Array.from(document.querySelectorAll('.checkbox-group input:checked'))
-        .map(checkbox => checkbox.value)
-        .join('、');
+    // Submit data to Firestore
+    submitBooking(name, phone, date, time, source);
 
-      const message = `
-        預約日期: ${date}
-        預約時間: ${time}
-        名字: ${name}
-        電話: ${phone}
-        生日月份: ${birthdayMonth}月
-        預約項目: ${selectedServices}
-        來源: ${referralSource}
-        （請等待韓哥審核並通知、為了維護品質預約請勿趕時間）
-        Hange韓哥服務地址
+    // Send a message via LINE
+    sendLineMessage(name, phone, date, time);
+  });
+</script>
+
+<!-- Example form -->
+<form id="bookingForm">
+  <label for="name">姓名:</label>
+  <input type="text" id="name" name="name" required>
+  
+  <label for="phone">電話:</label>
+  <input type="tel" id="phone" name="phone" required>
+  
+  <label for="date">預約日期:</label>
+  <input type="date" id="date" name="date" required>
+  
+  <label for="time">預約時間:</label>
+  <input type="time" id="time" name="time" required>
+  
+  <label for="source">如何得知我們:</label>
+  <select id="source" name="source">
+    <option value="Google search">Google 搜尋</option>
+    <option value="FB">Facebook</option>
+    <option value="IG">Instagram</option>
+    <option value="Friend referral">朋友介紹</option>
+    <option value="Appointment organization">預約組織</option>
+  </select>
+  
+  <button type="submit">送出預約</button>
+</form>
