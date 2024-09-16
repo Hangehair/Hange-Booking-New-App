@@ -1,9 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>預約表單</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    form {
+      width: 300px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 20px;
+    }
+    .numbered-items {
+      margin-top: 10px;
+    }
+    .numbered-items label {
+      margin-bottom: 5px;
+    }
+    .numbered-items ol {
+      list-style: decimal;
+      margin-left: 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<form id="bookingForm">
+  <label for="name">1. 姓名:</label>
+  <input type="text" id="name" name="name" required>
+
+  <label for="phone">2. 電話:</label>
+  <input type="tel" id="phone" name="phone" required>
+
+  <label for="date">3. 預約日期:</label>
+  <input type="date" id="date" name="date" required>
+
+  <label for="time">4. 預約時間:</label>
+  <input type="time" id="time" name="time" required>
+
+  <div class="numbered-items">
+    <label>5. 預約項目:</label>
+    <ol>
+      <li>項目一</li>
+      <li>項目二</li>
+      <li>項目三</li>
+      <li>項目四</li>
+      <li>項目五</li>
+    </ol>
+  </div>
+
+  <label for="source">如何得知我們:</label>
+  <select id="source" name="source">
+    <option value="Google search">Google 搜尋</option>
+    <option value="FB">Facebook</option>
+    <option value="IG">Instagram</option>
+    <option value="Friend referral">朋友介紹</option>
+    <option value="Appointment organization">預約組織</option>
+  </select>
+
+  <button type="submit">送出預約</button>
+</form>
+
 <script type="module">
-  // Import the Firebase SDKs you need
+  // Firebase 配置
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-  
-  // Firebase configuration
+
+  // 初始化 Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyB9Ip48HEF5G3s0GW_5HXxP1ZayE4mcVKw",
     authDomain: "linetime-1222.firebaseapp.com",
@@ -14,12 +95,21 @@
     measurementId: "G-WGTEP9YPYY"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app); // Initialize Firestore
+  const db = getFirestore(app); // 初始化 Firestore
 
-  // Submit booking data to Firestore
-  async function submitBooking(name, phone, date, time, source) {
+  // 表單提交事件處理
+  document.getElementById('bookingForm').addEventListener('submit', async function (e) {
+    e.preventDefault(); // 阻止表單的默認提交行為
+
+    // 收集表單資料
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('time').value;
+    const source = document.getElementById('source').value;
+
+    // 儲存到 Firestore
     try {
       const docRef = await addDoc(collection(db, "bookings"), {
         name: name,
@@ -28,67 +118,16 @@
         time: time,
         source: source
       });
-      console.log("Booking added to Firestore with ID: ", docRef.id);
+      console.log("預約已儲存，ID: ", docRef.id);
+      alert('預約成功！');
+      // 清除表單
+      document.getElementById('bookingForm').reset();
     } catch (e) {
-      console.error("Error adding document: ", e);
+      console.error("儲存預約時發生錯誤: ", e);
+      alert('預約失敗，請稍後再試！');
     }
-  }
-
-  // Function to send a message via LINE
-  function sendLineMessage(name, phone, date, time) {
-    liff.sendMessages([{
-      type: 'text',
-      text: `預約成功！\n姓名: ${name}\n電話: ${phone}\n預約日期: ${date}\n預約時間: ${time}\n我們將會盡快與您確認，請耐心等候。`
-    }])
-    .then(() => {
-      console.log("Message sent!");
-    })
-    .catch((err) => {
-      console.error("Error sending message: ", err);
-    });
-  }
-
-  // Event listener for form submission
-  document.getElementById('bookingForm').addEventListener('submit', function (e) {
-    e.preventDefault(); // Prevent form from submitting normally
-
-    // Collect form data
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const date = document.getElementById('date').value;
-    const time = document.getElementById('time').value;
-    const source = document.getElementById('source').value;
-
-    // Submit data to Firestore
-    submitBooking(name, phone, date, time, source);
-
-    // Send a message via LINE
-    sendLineMessage(name, phone, date, time);
   });
 </script>
 
-<!-- Example form -->
-<form id="bookingForm">
-  <label for="name">姓名:</label>
-  <input type="text" id="name" name="name" required>
-  
-  <label for="phone">電話:</label>
-  <input type="tel" id="phone" name="phone" required>
-  
-  <label for="date">預約日期:</label>
-  <input type="date" id="date" name="date" required>
-  
-  <label for="time">預約時間:</label>
-  <input type="time" id="time" name="time" required>
-  
-  <label for="source">如何得知我們:</label>
-  <select id="source" name="source">
-    <option value="Google search">Google 搜尋</option>
-    <option value="FB">Facebook</option>
-    <option value="IG">Instagram</option>
-    <option value="Friend referral">朋友介紹</option>
-    <option value="Appointment organization">預約組織</option>
-  </select>
-  
-  <button type="submit">送出預約</button>
-</form>
+</body>
+</html>
