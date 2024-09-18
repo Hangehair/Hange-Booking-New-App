@@ -1,184 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>台北西門町接髮專家Hange韓哥預約系統</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f8f8f8;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 90%;
-      max-width: 400px;
-    }
-    input, select {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      width: 100%;
-      box-sizing: border-box;
-      text-align: center; /* 資料置中 */
-    }
-    .date-picker {
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      width: 100%;
-      text-align: center;
-    }
-    button {
-      padding: 10px;
-      font-size: 18px;
-      color: white;
-      background-color: #007bff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>台北西門町接髮專家Hange韓哥預約系統</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f8f8f8;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 90%;
+      max-width: 400px;
+    }
+    input, select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center; /* 資料置中 */
+    }
+    .date-picker {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      width: 100%;
+      text-align: center;
+    }
+    button {
+      padding: 10px;
+      font-size: 18px;
+      color: white;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-  <h2>台北西門町接髮專家Hange韓哥預約系統</h2>
-  <form id="bookingForm">
-    <!-- 日曆選擇器 -->
-    <input type="date" id="date" class="date-picker" min="" max="" required>
+  <h2>台北西門町接髮專家Hange韓哥預約系統</h2>
+  <form id="bookingForm">
+    <!-- 日曆選擇器 -->
+    <input type="date" id="date" class="date-picker" min="" max="" required>
 
-    <!-- 時間選擇 -->
-    <select id="time" required>
-      <option value="" disabled selected>請選擇預約時段</option>
-      <option value="13:00">13:00</option>
-      <option value="14:00">14:00</option>
-      <option value="15:00">15:00</option>
-      <option value="16:00">16:00</option>
-      <option value="17:00">17:00</option>
-    </select>
+    <!-- 時間選擇 -->
+    <select id="time" required>
+      <option value="" disabled selected>請選擇預約時段</option>
+      <option value="13:00">13:00</option>
+      <option value="14:00">14:00</option>
+      <option value="15:00">15:00</option>
+      <option value="16:00">16:00</option>
+      <option value="17:00">17:00</option>
+    </select>
 
-    <!-- 名字 -->
-    <input type="text" id="name" placeholder="名字" required>
+    <!-- 名字 -->
+    <input type="text" id="name" placeholder="名字" required>
 
-    <!-- 電話 -->
-    <input type="tel" id="phone" placeholder="電話" required>
+    <!-- 電話 -->
+    <input type="tel" id="phone" placeholder="電話" required>
 
-    <!-- 生日月份 -->
-    <select id="birthdayMonth" required>
-      <option value="" disabled selected>請選擇生日月份</option>
-      <option value="1">1月</option>
-      <option value="2">2月</option>
-      <option value="3">3月</option>
-      <option value="4">4月</option>
-      <option value="5">5月</option>
-      <option value="6">6月</option>
-      <option value="7">7月</option>
-      <option value="8">8月</option>
-      <option value="9">9月</option>
-      <option value="10">10月</option>
-      <option value="11">11月</option>
-      <option value="12">12月</option>
-    </select>
+    <!-- 生日月份 -->
+    <select id="birthdayMonth" required>
+      <option value="" disabled selected>請選擇生日月份</option>
+      <option value="1">1月</option>
+      <option value="2">2月</option>
+      <option value="3">3月</option>
+      <option value="4">4月</option>
+      <option value="5">5月</option>
+      <option value="6">6月</option>
+      <option value="7">7月</option>
+      <option value="8">8月</option>
+      <option value="9">9月</option>
+      <option value="10">10月</option>
+      <option value="11">11月</option>
+      <option value="12">12月</option>
+    </select>
 
-    <!-- 來源選擇 -->
-    <select id="referralSource" required>
-      <option value="" disabled selected>在哪邊知道Hange韓哥</option>
-      <option value="Google搜尋">谷歌搜尋</option>
-      <option value="FB">FB</option>
-      <option value="IG">IG</option>
-      <option value="朋友介紹">朋友介紹</option>
-      <option value="預約整理">預約整理</option>
-    </select>
+    <!-- 來源選擇 -->
+    <select id="referralSource" required>
+      <option value="" disabled selected>在哪邊知道Hange韓哥</option>
+      <option value="Google搜尋">谷歌搜尋</option>
+      <option value="FB">FB</option>
+      <option value="IG">IG</option>
+      <option value="朋友介紹">朋友介紹</option>
+      <option value="預約整理">預約整理</option>
+    </select>
 
-    <!-- 送出按鈕 -->
-    <button type="submit">送出預約</button>
-  </form>
+    <!-- 預約項目選擇 -->
+    <select id="serviceType" required>
+      <option value="" disabled selected>請選擇預約項目</option>
+      <option value="接髮">1. 接髮</option>
+      <option value="染髮">2. 染髮</option>
+      <option value="剪髮">3. 剪髮</option>
+      <option value="護髮">4. 護髮</option>
+      <option value="其他">5. 其他</option>
+    </select>
 
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-  <script>
-    // 設定最小和最大預約日期（排除星期一）
-    document.addEventListener('DOMContentLoaded', function () {
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = (today.getMonth() + 1).toString().padStart(2, '0');
-      const day = today.getDate().toString().padStart(2, '0');
-      const minDate = `${year}-${month}-${day}`;
-      document.getElementById('date').setAttribute('min', minDate);
+    <!-- 送出按鈕 -->
+    <button type="submit">送出預約</button>
+  </form>
 
-      // 排除星期一
-      document.getElementById('date').addEventListener('change', function () {
-        const selectedDate = new Date(this.value);
-        if (selectedDate.getDay() === 1) { // 1代表星期一
-          alert('星期一無法預約，請選擇其他日期！');
-          this.value = ''; // 清空選擇
-        }
-      });
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script>
+    // 設定最小和最大預約日期（排除星期一）
+    document.addEventListener('DOMContentLoaded', function () {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = (today.getMonth() + 1).toString().padStart(2, '0');
+      const day = today.getDate().toString().padStart(2, '0');
+      const minDate = `${year}-${month}-${day}`;
+      document.getElementById('date').setAttribute('min', minDate);
 
-      // 初始化LIFF
-      liff.init({ liffId: "2006300099-OLXDXZlb" }).then(() => {
-        // 自動帶入LINE使用者資料
-        liff.getProfile().then(profile => {
-          document.getElementById('name').value = profile.displayName;
-        });
+      // 排除星期一
+      document.getElementById('date').addEventListener('change', function () {
+        const selectedDate = new Date(this.value);
+        if (selectedDate.getDay() === 1) { // 1代表星期一
+          alert('星期一無法預約，請選擇其他日期！');
+          this.value = ''; // 清空選擇
+        }
+      });
 
-        // 獲取LINE使用者電話（若有授權）
-        liff.getDecodedIDToken().then(idToken => {
-          document.getElementById('phone').value = idToken.sub; // 假設idToken中包含電話號碼
-        });
-      }).catch(err => console.error(err));
-    });
+      // 初始化LIFF
+      liff.init({ liffId: "2006300099-OLXDXZlb" }).then(() => {
+        // 自動帶入LINE使用者資料
+        liff.getProfile().then(profile => {
+          document.getElementById('name').value = profile.displayName;
+        });
 
-    // 提交表單並發送至LINE
-    document.getElementById('bookingForm').addEventListener('submit', function (event) {
-      event.preventDefault();
+        // 獲取LINE使用者電話（若有授權）
+        liff.getDecodedIDToken().then(idToken => {
+          document.getElementById('phone').value = idToken.sub; // 假設idToken中包含電話號碼
+        });
+      }).catch(err => console.error(err));
+    });
 
-      const date = document.getElementById('date').value;
-      const time = document.getElementById('time').value;
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const birthdayMonth = document.getElementById('birthdayMonth').value;
-      const referralSource = document.getElementById('referralSource').value;
+    // 提交表單並發送至LINE
+    document.getElementById('bookingForm').addEventListener('submit', function (event) {
+      event.preventDefault();
 
-      // LINE發送訊息
-      const message = `
-        預約諮詢:
-        預約日期: ${date}
-        預約時間: ${time}
-        名字: ${name}
-        電話: ${phone}
-        生日月份: ${birthdayMonth}月
-        來源: ${referralSource}
-        （請等待韓哥審核並通知、為了維護品質預約請勿趕時間）
-        Hange韓哥服務地址：https://maps.app.goo.gl/8GQYF3yosEfm8uJa9?g_st=com.google.maps.preview.copy
-      `;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const birthdayMonth = document.getElementById('birthdayMonth').value;
+      const referralSource = document.getElementById('referralSource').value;
+      const serviceType = document.getElementById('serviceType').value;
 
-      // 使用 LIFF 發送訊息
-      liff.sendMessages([{
-        type: 'text',
-        text: message
-      }]).then(function () {
-        alert('預約已送出，請等待韓哥審核！');
-        liff.closeWindow();
-      }).catch(function (error) {
-        console.error('Error sending message: ', error);
-      });
-    });
-  </script>
-</body>
-</html>
+      // LINE發送訊息
+      const message = `
+        預約諮詢:
+        預約日期: ${date}
+        預約時間: ${time}
+        名字: ${name}
+        電話: ${phone}
+        生日月份: ${birthdayMonth}月
+        來源: ${referralSource}
+        預約項目: ${serviceType}
+        （請等待韓哥審核並通知、為了維護品質預約請勿趕時間）
+        Hange韓哥服務地址：https://maps.app.goo.gl/8GQYF3yosEfm8uJa9?g_st=com.google.maps.preview.copy
+      `;
+
+      // 使用 LIFF 發送訊息
+      liff.sendMessages([{
+        type: 'text',
+        text: message
+      }]).then(function () {
+        alert('預約已送出，請等待韓哥審核！');
+        liff.closeWindow();
+      }).catch(function (error) {
+        console.error('Error sending message: ', error);
+      });
+    });
+  </script
