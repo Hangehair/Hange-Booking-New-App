@@ -1,218 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>台北西門町接髮專家Hange韓哥預約系統</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f8f8f8;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .container {
-      border: 2px solid #ccc;
-      padding: 20px;
-      border-radius: 10px;
-      background-color: white;
-      width: 90%;
-      max-width: 400px;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-    }
-    input, select, .date-picker, .checkbox-group {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      width: 100%;
-      box-sizing: border-box;
-      text-align: center;
-    }
-    label {
-      text-align: left;
-      font-weight: bold;
-    }
-    .checkbox-group {
-      text-align: left;
-    }
-    .checkbox-group label {
-      margin-right: 10px;
-    }
-    button {
-      padding: 10px;
-      font-size: 18px;
-      color: white;
-      background-color: #007bff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>台北西門町接髮專家Hange韓哥預約系統</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f8f8f8;
+    }
+    .container {
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input, select, button {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      text-align: center;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-  <h2>台北西門町接髮專家Hange韓哥預約系統</h2>
-  <div class="container">
-    <form id="bookingForm">
-      <!-- 姓名 -->
-      <label for="name">1. 姓名：</label>
-      <input type="text" id="name" placeholder="名字" required>
+  <div class="container">
+    <form id="bookingForm">
+      <label for="name">1.姓名：</label>
+      <input type="text" id="name" placeholder="名字" required>
+      
+      <label for="phone">2.電話：</label>
+      <input type="tel" id="phone" placeholder="電話" required>
+      
+      <label for="date">3.預約日期：</label>
+      <input type="date" id="date" class="date-picker" placeholder="請選擇預約日期" required>
+      
+      <label for="time">4.預約時段：</label>
+      <select id="time" required>
+        <option value="" disabled selected>請選擇預約時段</option>
+        <option value="13:00">13:00</option>
+        <option value="14:00">14:00</option>
+        <option value="15:00">15:00</option>
+        <option value="16:00">16:00</option>
+        <option value="17:00">17:00</option>
+      </select>
 
-      <!-- 電話 -->
-      <label for="phone">2. 電話：</label>
-      <input type="tel" id="phone" placeholder="電話" required>
+      <label for="birthdayMonth">5.生日月份：</label>
+      <select id="birthdayMonth" required>
+        <option value="" disabled selected>請選擇生日月份</option>
+        <option value="1">1月</option>
+        <option value="2">2月</option>
+        <option value="3">3月</option>
+        <option value="4">4月</option>
+        <option value="5">5月</option>
+        <option value="6">6月</option>
+        <option value="7">7月</option>
+        <option value="8">8月</option>
+        <option value="9">9月</option>
+        <option value="10">10月</option>
+        <option value="11">11月</option>
+        <option value="12">12月</option>
+      </select>
 
-      <!-- 預約日期 -->
-      <label for="date">3. 預約日期：</label>
-      <input type="date" id="date" class="date-picker" placeholder="請選擇預約日期" min="" max="" required>
+      <label for="referralSource">6.哪邊知道韓哥：</label>
+      <select id="referralSource" required>
+        <option value="" disabled selected>請選擇</option>
+        <option value="Google搜尋">Google搜尋</option>
+        <option value="FB">FB</option>
+        <option value="IG">IG</option>
+        <option value="朋友介紹">朋友介紹</option>
+        <option value="預約整理">預約整理</option>
+      </select>
 
-      <!-- 預約時段 -->
-      <label for="time">4. 預約時段：</label>
-      <select id="time" required>
-        <option value="" disabled selected>請選擇預約時段</option>
-        <option value="13:00">13:00</option>
-        <option value="14:00">14:00</option>
-        <option value="15:00">15:00</option>
-        <option value="16:00">16:00</option>
-        <option value="17:00">17:00</option>
-      </select>
+      <label for="service">7.預約項目：</label>
+      <select id="service" multiple required>
+        <option value="接髮">接髮</option>
+        <option value="染髮">染髮</option>
+        <option value="燙髮">燙髮</option>
+        <option value="剪髮">剪髮</option>
+        <option value="洗髮">洗髮</option>
+        <option value="頭髮護理">頭髮護理</option>
+        <option value="頭皮護理">頭皮護理</option>
+      </select>
 
-      <!-- 生日月份 -->
-      <label for="birthdayMonth">5. 生日月份：</label>
-      <select id="birthdayMonth" required>
-        <option value="" disabled selected>請選擇生日月份</option>
-        <option value="1">1月</option>
-        <option value="2">2月</option>
-        <option value="3">3月</option>
-        <option value="4">4月</option>
-        <option value="5">5月</option>
-        <option value="6">6月</option>
-        <option value="7">7月</option>
-        <option value="8">8月</option>
-        <option value="9">9月</option>
-        <option value="10">10月</option>
-        <option value="11">11月</option>
-        <option value="12">12月</option>
-      </select>
+      <button type="submit">送出預約</button>
+    </form>
+  </div>
 
-      <!-- 來源選擇 -->
-      <label for="referralSource">6. 哪邊知道韓哥：</label>
-      <select id="referralSource" required>
-        <option value="" disabled selected>在哪邊知道Hange韓哥</option>
-        <option value="Google搜尋">谷歌搜尋</option>
-        <option value="FB">FB</option>
-        <option value="IG">IG</option>
-        <option value="朋友介紹">朋友介紹</option>
-        <option value="預約整理">預約整理</option>
-      </select>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('date').setAttribute('min', today);
 
-      <!-- 預約項目 -->
-      <label for="services">7. 預約項目：</label>
-      <div class="checkbox-group" id="services">
-        <label><input type="checkbox" value="接髮"> 接髮</label>
-        <label><input type="checkbox" value="染髮"> 染髮</label>
-        <label><input type="checkbox" value="燙髮"> 燙髮</label>
-        <label><input type="checkbox" value="剪髮"> 剪髮</label>
-        <label><input type="checkbox" value="洗髮"> 洗髮</label>
-        <label><input type="checkbox" value="頭髮護理"> 頭髮護理</label>
-        <label><input type="checkbox" value="頭皮護理"> 頭皮護理</label>
-      </div>
+      document.getElementById('date').addEventListener('change', function () {
+        const selectedDate = new Date(this.value);
+        if (selectedDate.getDay() === 1) {
+          alert('星期一無法預約，請選擇其他日期！');
+          this.value = '';
+        }
+      });
 
-      <!-- 送出按鈕 -->
-      <button type="submit">送出預約</button>
-    </form>
-  </div>
+      liff.init({ liffId: "2006300099-OLXDXZlb" }).then(() => {
+        liff.getProfile().then(profile => {
+          document.getElementById('name').value = profile.displayName;
+        });
 
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-  <script>
-    // 設定最小和最大預約日期（排除星期一）
-    document.addEventListener('DOMContentLoaded', function () {
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = (today.getMonth() + 1).toString().padStart(2, '0');
-      const day = today.getDate().toString().padStart(2, '0');
-      const minDate = `${year}-${month}-${day}`;
-      document.getElementById('date').setAttribute('min', minDate);
+        liff.getDecodedIDToken().then(idToken => {
+          document.getElementById('phone').value = idToken.sub;
+        });
+      }).catch(err => console.error(err));
+    });
 
-      // 排除星期一
-      document.getElementById('date').addEventListener('change', function () {
-        const selectedDate = new Date(this.value);
-        if (selectedDate.getDay() === 1) { // 1代表星期一
-          alert('星期一無法預約，請選擇其他日期！');
-          this.value = ''; // 清空選擇
-        }
-      });
+    document.getElementById('bookingForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const birthdayMonth = document.getElementById('birthdayMonth').value;
+      const referralSource = document.getElementById('referralSource').value;
+      const services = Array.from(document.getElementById('service').selectedOptions).map(option => option.value).join(', ');
 
-      // 初始化LIFF
-      liff.init({ liffId: "2006300099-OLXDXZlb" }).then(() => {
-        // 自動帶入LINE使用者資料
-        liff.getProfile().then(profile => {
-          document.getElementById('name').value = profile.displayName;
-        });
+      const message = `
+        預約諮詢:
+        名字: ${name}
+        電話: ${phone}
+        預約日期: ${date}
+        預約時段: ${time}
+        生日月份: ${birthdayMonth}月
+        來源: ${referralSource}
+        預約項目: ${services}
+        （請等待韓哥審核並通知）
+        Hange韓哥服務地址：https://maps.app.goo.gl/8GQYF3yosEfm8uJa9?g_st=com.google.maps.preview.copy
+      `;
 
-        // 獲取LINE使用者電話（若有授權）
-        liff.getDecodedIDToken().then(idToken => {
-          document.getElementById('phone').value = idToken.sub; // 假設idToken中包含電話號碼
-        });
-      }).catch(err => console.error(err));
-    });
-
-    // 提交表單並發送至LINE
-    document.getElementById('bookingForm').addEventListener('submit', function (event) {
-      event.preventDefault();
-
-      const date = document.getElementById('date').value;
-      const time = document.getElementById('time').value;
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const birthdayMonth = document.getElementById('birthdayMonth').value;
-      const referralSource = document.getElementById('referralSource').value;
-
-      // 取得複選框值
-      const services = Array.from(document.querySelectorAll('#services input[type="checkbox"]:checked')).map(checkbox => checkbox.value).join(', ');
-
-      // LINE發送訊息
-      const message = `
-        預約諮詢:
-        預約日期: ${date}
-        預約時間: ${time}
-        名字: ${name}
-        電話: ${phone}
-        生日月份: ${birthdayMonth}
-        來源: ${referralSource}
-        預約項目: ${services}
-        
-        （確認是否預約成功會在告知）
-      `;
-
-      liff.sendMessages([{
-        type: 'text',
-        text: message
-      }]).then(() => {
-        alert('預約訊息已送出，請等待確認！');
-        // 關閉LIFF視窗
-        liff.closeWindow();
-      }).catch(err => {
-        console.error('訊息傳送失敗', err);
-        alert('訊息傳送失敗，請稍後再試！');
-      });
-    });
-  </script>
+      liff.sendMessages([{ type: 'text', text: message }]).then(() => {
+        alert('預約已送出，請等待韓哥審核！');
+        liff.closeWindow();
+      }).catch(error => console.error('Error sending message:', error));
+    });
+  </script>
 </body>
 </html>
