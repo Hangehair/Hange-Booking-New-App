@@ -150,7 +150,7 @@
       const services = Array.from(document.getElementById('service').selectedOptions).map(option => option.value).join(', ');
 
       const message = `
-        預約諮詢:
+        預約資料如下
         名字: ${name}
         電話: ${phone}
         預約日期: ${date}
@@ -159,6 +159,7 @@
         來源: ${referralSource}
         預約項目: ${services}
         （請等待韓哥審核並通知）
+        ，
         Hange韓哥服務地址：https://maps.app.goo.gl/8GQYF3yosEfm8uJa9?g_st=com.google.maps.preview.copy
       `;
 
